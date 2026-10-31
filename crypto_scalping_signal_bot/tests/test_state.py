@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from scalping_bot.models import Signal
 from scalping_bot.state import SignalState
@@ -36,7 +37,8 @@ class StateTests(unittest.TestCase):
     def test_unwritable_state_does_not_raise(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             state = SignalState(folder)
-            state.mark_sent(signal())
+            with patch("scalping_bot.state.logger"):
+                state.mark_sent(signal())
             self.assertTrue(state.on_cooldown(signal(), 60))
 
 

@@ -21,6 +21,7 @@ Optional support-breakdown and resistance-rejection short signals can be enabled
 
 ```
 bot.py                  CLI: --ping, --once, --loop, --test-telegram, --status
+setup_telegram.py       One-command token validation, chat discovery, config
 get_chat_id.py          Finds your numeric chat ID from getUpdates
 review_signals.py       Replays journaled signals against later candles
 scalping_bot/
@@ -33,6 +34,7 @@ scalping_bot/
   state.py              Persistent cooldown state
   journal.py            Append-only JSONL signal journal
   telegram.py           Chunked, retrying sendMessage delivery
+  telegram_api.py       getMe/getUpdates helpers for setup
   logging_setup.py      UTC console and rotating-file logging
   review.py             Forward-test outcome evaluation
 deploy/                 systemd unit and installer
@@ -65,13 +67,48 @@ does not place orders. Check that this service is permitted in your region.
 
 ## Telegram setup
 
-1. In Telegram, open the verified **@BotFather** account and create a bot. Copy its token.
+Telegram has no API for creating bots. A human Telegram account must create the
+bot in **@BotFather** once; after that, this project handles the linking.
+
+### One-command setup (recommended)
+
+1. Open the verified **@BotFather**, send `/newbot`, choose a name and username,
+   and copy the token.
+2. Run:
+
+```bash
+python3 setup_telegram.py
+```
+
+Paste the token when prompted; input is hidden. The script then:
+
+- validates the token and prints your bot's `https://t.me/...` link,
+- waits for you to press Start or send the bot a message,
+- discovers your numeric chat ID,
+- writes `config.env` with mode 600,
+- sends a test message to confirm delivery.
+
+If you have several chats, it lists them and uses the most recent private chat.
+Rerun with `--chat-id <id>` to choose another. For a group, add the bot and send
+a message there first (mention the bot, or disable privacy mode with BotFather
+`/setprivacy`).
+
+Then load the saved file and start scanning:
+
+```bash
+set -a; source config.env; set +a
+python3 bot.py --status
+python3 bot.py --loop
+```
+
+### Manual setup
+
+1. Create the bot in **@BotFather** and copy its token.
 2. Open your new bot and send it any message. A bot cannot initiate a chat with you.
 3. Run `python3 get_chat_id.py` and paste the token when prompted. It prints the
-   numeric chat ID for every chat that has messaged the bot. For a group, add the
-   bot to the group, send a message there (mention the bot, or disable privacy
-   mode with BotFather `/setprivacy`), then run the script again.
-4. Set credentials as environment variables. Do not paste them into source files or send them to anyone.
+   numeric chat ID for every chat that has messaged the bot.
+4. Set credentials as environment variables. Do not paste them into source files
+   or send them to anyone.
 
 Linux/macOS:
 

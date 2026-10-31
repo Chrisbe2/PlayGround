@@ -13,7 +13,7 @@ import getpass
 import os
 import sys
 
-import requests
+from scalping_bot.telegram_api import TelegramAPIError, collect_chats, get_updates
 
 
 def _token() -> str:
@@ -26,46 +26,13 @@ def _token() -> str:
     return token
 
 
-def _chat_from_update(update: dict) -> dict | None:
-    for key in ("message", "edited_message", "channel_post", "edited_channel_post"):
-        payload = update.get(key)
-        if isinstance(payload, dict) and isinstance(payload.get("chat"), dict):
-            return payload["chat"]
-    member = update.get("my_chat_member")
-    if isinstance(member, dict) and isinstance(member.get("chat"), dict):
-        return member["chat"]
-    return None
-
-
 def main() -> int:
     token = _token()
     try:
-        response = requests.get(
-            f"https://api.telegram.org/bot{token}/getUpdates",
-            params={"timeout": 0, "limit": 100},
-            timeout=20,
-        )
-        payload = response.json()
-    except (requests.RequestException, ValueError) as exc:
-        print(f"Could not reach Telegram: {exc}", file=sys.stderr)
+        chats = collect_chats(get_updates(token))
+    except TelegramAPIError as exc:
+        print(exc, file=sys.stderr)
         return 1
-
-    if not payload.get("ok"):
-        description = payload.get("description", "unknown error")
-        print(f"Telegram rejected the request: {description}", file=sys.stderr)
-        if response.status_code == 409:
-            print(
-                "Another process is polling this bot (for example bot.py --loop). "
-                "Stop it, then run this script again.",
-                file=sys.stderr,
-            )
-        return 1
-
-    chats: dict[int, dict] = {}
-    for update in payload.get("result", []):
-        chat = _chat_from_update(update)
-        if chat and "id" in chat:
-            chats[int(chat["id"])] = chat
 
     if not chats:
         print("No chats found.")
