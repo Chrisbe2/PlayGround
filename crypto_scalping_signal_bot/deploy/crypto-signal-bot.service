@@ -1,0 +1,29 @@
+[Unit]
+Description=Crypto Scalping Signal Bot
+Documentation=file://@APP_DIR@/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@RUN_USER@
+Group=@RUN_GROUP@
+WorkingDirectory=@APP_DIR@
+EnvironmentFile=@ENV_FILE@
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=SIGNAL_STATE_FILE=@STATE_DIR@/state.json
+Environment=SIGNAL_JOURNAL_FILE=@STATE_DIR@/signals.jsonl
+Environment=LOG_FILE=@STATE_DIR@/bot.log
+ExecStart=@PYTHON@ bot.py --loop
+Restart=on-failure
+RestartSec=15
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=@STATE_DIR@
+
+[Install]
+WantedBy=multi-user.target

@@ -43,6 +43,8 @@ class Config:
     loop_seconds: int = 300
     allow_shorts: bool = False
     state_file: str = "state.json"
+    journal_file: str = "signals.jsonl"
+    log_file: str = ""
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -64,7 +66,9 @@ class Config:
             cooldown_minutes=_int("SIGNAL_COOLDOWN_MINUTES", cls.cooldown_minutes),
             loop_seconds=_int("SCAN_INTERVAL_SECONDS", cls.loop_seconds),
             allow_shorts=_bool("ALLOW_SHORTS", cls.allow_shorts),
-            state_file=os.getenv("SIGNAL_STATE_FILE", cls.state_file),
+            state_file=os.getenv("SIGNAL_STATE_FILE", cls.state_file).strip(),
+            journal_file=os.getenv("SIGNAL_JOURNAL_FILE", cls.journal_file).strip(),
+            log_file=os.getenv("LOG_FILE", cls.log_file).strip(),
         )
         config.validate()
         return config

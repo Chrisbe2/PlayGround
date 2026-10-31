@@ -1,0 +1,11 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.py[cod]
+state/
+*.log
+signals.jsonl
+config.env
+tests/
+deploy/

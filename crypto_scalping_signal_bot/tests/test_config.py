@@ -18,6 +18,21 @@ class ConfigTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 Config.from_env()
 
+    def test_journal_and_log_paths_come_from_environment(self) -> None:
+        with patch.dict(
+            os.environ,
+            {"SIGNAL_JOURNAL_FILE": "custom.jsonl", "LOG_FILE": "bot.log"},
+            clear=True,
+        ):
+            config = Config.from_env()
+        self.assertEqual(config.journal_file, "custom.jsonl")
+        self.assertEqual(config.log_file, "bot.log")
+
+    def test_journal_can_be_disabled(self) -> None:
+        with patch.dict(os.environ, {"SIGNAL_JOURNAL_FILE": ""}, clear=True):
+            config = Config.from_env()
+        self.assertEqual(config.journal_file, "")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,14 @@
+services:
+  signal-bot:
+    build: .
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 15s
+    env_file:
+      - config.env
+    environment:
+      SIGNAL_STATE_FILE: /app/state/state.json
+      SIGNAL_JOURNAL_FILE: /app/state/signals.jsonl
+      LOG_FILE: /app/state/bot.log
+    volumes:
+      - ./state:/app/state

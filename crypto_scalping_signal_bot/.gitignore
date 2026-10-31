@@ -3,5 +3,7 @@ __pycache__/
 .env
 config.env
 state.json
+signals.jsonl
+*.log
 state/
 .venv/

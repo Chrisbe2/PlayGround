@@ -26,6 +26,19 @@ class StateTests(unittest.TestCase):
             restored = SignalState(path)
             self.assertTrue(restored.on_cooldown(item, 60))
 
+    def test_corrupt_state_is_ignored(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "state.json"
+            path.write_text("not json", encoding="utf-8")
+            state = SignalState(str(path))
+            self.assertEqual(state.last_sent, {})
+
+    def test_unwritable_state_does_not_raise(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            state = SignalState(folder)
+            state.mark_sent(signal())
+            self.assertTrue(state.on_cooldown(signal(), 60))
+
 
 if __name__ == "__main__":
     unittest.main()

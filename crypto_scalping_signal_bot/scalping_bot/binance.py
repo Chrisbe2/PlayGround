@@ -63,15 +63,17 @@ class BinanceClient:
         candidates.sort(key=lambda pair: pair[1], reverse=True)
         return [symbol for symbol, _ in candidates[: self.config.max_symbols]]
 
-    def closed_candles(self, symbol: str) -> list[Candle]:
-        rows = self._get(
-            "/api/v3/klines",
-            {
-                "symbol": symbol,
-                "interval": self.config.interval,
-                "limit": self.config.kline_limit,
-            },
-        )
+    def closed_candles(
+        self, symbol: str, start_time: int | None = None, limit: int | None = None
+    ) -> list[Candle]:
+        params: dict[str, Any] = {
+            "symbol": symbol,
+            "interval": self.config.interval,
+            "limit": min(1000, limit or self.config.kline_limit),
+        }
+        if start_time is not None:
+            params["startTime"] = int(start_time)
+        rows = self._get("/api/v3/klines", params)
         now_ms = int(time.time() * 1000)
         candles = [Candle.from_binance(row) for row in rows]
         return [candle for candle in candles if candle.close_time <= now_ms]

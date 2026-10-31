@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import time
 from pathlib import Path
 
 from .models import Signal
+
+logger = logging.getLogger(__name__)
 
 
 class SignalState:
@@ -27,9 +30,16 @@ class SignalState:
 
     def mark_sent(self, signal: Signal) -> None:
         self.last_sent[signal.cooldown_key] = time.time()
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = self.path.with_suffix(self.path.suffix + ".tmp")
-        temporary.write_text(
-            json.dumps({"last_sent": self.last_sent}, indent=2), encoding="utf-8"
-        )
-        temporary.replace(self.path)
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = self.path.with_suffix(self.path.suffix + ".tmp")
+            temporary.write_text(
+                json.dumps({"last_sent": self.last_sent}, indent=2), encoding="utf-8"
+            )
+            temporary.replace(self.path)
+        except OSError as exc:
+            logger.warning(
+                "Could not persist cooldown state to %s: %s (cooldowns will reset on restart)",
+                self.path,
+                exc,
+            )
