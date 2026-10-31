@@ -16,3 +16,5 @@ screenshots/
 .opencode-web/
 
 node_modules/
+
+dist/

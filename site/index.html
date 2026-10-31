@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>Crypto Scalping Signal Bot</title>
+  <meta name="description" content="A signal-only Binance 5-minute scalping scanner with Telegram alerts.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Crypto Scalping Signal Bot</span>
+    </a>
+    <span class="pill">Signal-only · no orders</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Binance spot · 5-minute closed candles</p>
+      <h1>Confluence signals,<br><span>delivered to Telegram.</span></h1>
+      <p class="lede">
+        Scans the most liquid USDT pairs for resistance breakouts and support
+        rejections, then confirms each setup with EMA trend, ATR volatility,
+        RSI momentum, and above-average volume.
+      </p>
+
+      <div class="stats" role="list">
+        <div class="stat" role="listitem">
+          <strong>5m</strong>
+          <span>Closed candles only</span>
+        </div>
+        <div class="stat" role="listitem">
+          <strong>26</strong>
+          <span>Liquid pairs scanned</span>
+        </div>
+        <div class="stat" role="listitem">
+          <strong>70+</strong>
+          <span>Minimum score</span>
+        </div>
+        <div class="stat" role="listitem">
+          <strong>0</strong>
+          <span>Orders placed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Bot overview">
+      <article class="card signal-card">
+        <div class="card-head">
+          <span class="label">Alert format</span>
+          <span class="side">LONG</span>
+        </div>
+        <h2>ZAMAUSDT</h2>
+        <p class="setup">Resistance breakout</p>
+        <div class="score">
+          <strong>88</strong><span>/100</span>
+        </div>
+        <dl class="levels">
+          <div><dt>Entry</dt><dd>0.06951</dd></div>
+          <div><dt>Stop</dt><dd>0.06902</dd></div>
+          <div><dt>TP 1R</dt><dd>0.07000</dd></div>
+          <div><dt>TP 2R</dt><dd>0.07049</dd></div>
+        </dl>
+        <p class="meta">ATR 0.000327 · RSI 67.3 · Volume 3.11×</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <span class="label">Pipeline</span>
+        </div>
+        <h2>How a signal is built</h2>
+        <ol class="steps">
+          <li><span>01</span> Rank USDT pairs by 24-hour quote volume.</li>
+          <li><span>02</span> Download candles and drop the forming bar.</li>
+          <li><span>03</span> Test breakout and rejection rules.</li>
+          <li><span>04</span> Score confluence, then apply the cooldown.</li>
+        </ol>
+      </article>
+
+      <article class="card code-card">
+        <div class="card-head">
+          <span class="label">Quick start</span>
+        </div>
+        <h2>Run it locally</h2>
+        <pre><code>python3 -m pip install -r requirements.txt
+python3 bot.py --ping
+python3 get_chat_id.py
+python3 bot.py --test-telegram
+python3 bot.py --loop</code></pre>
+        <p class="meta">
+          Public market data only. No exchange API keys are required.
+        </p>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <span class="label">Risk</span>
+        </div>
+        <h2>Read before trading</h2>
+        <p class="copy">
+          Five-minute signals are sensitive to spread, fees, slippage, latency,
+          and false breakouts. Entry, stop, and target values are references,
+          not executable quotes. Forward-test before risking real money.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>Research software · Not financial advice</span>
+    <span class="footer-dot" aria-hidden="true"></span>
+    <span>Telegram alerts via the Bot API</span>
+  </footer>
+</body>
+</html>
