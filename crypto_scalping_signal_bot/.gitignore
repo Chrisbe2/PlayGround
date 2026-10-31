@@ -1,7 +1,0 @@
-__pycache__/
-*.py[cod]
-.env
-config.env
-state.json
-state/
-.venv/
