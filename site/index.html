@@ -4,118 +4,435 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <link rel="icon" href="data:,">
-  <title>Crypto Scalping Signal Bot</title>
-  <meta name="description" content="A signal-only Binance 5-minute scalping scanner with Telegram alerts.">
+  <meta name="theme-color" content="#06090f">
+  <title>Signal Desk — Private Market Intelligence</title>
+  <meta name="description" content="A private, signal-only desk for 5-minute Binance confluence setups. No orders, no custody, no chat feed.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div class="ambient" aria-hidden="true"></div>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.4c0 4.4 3.2 8.1 7.5 9.6 4.3-1.5 7.5-5.2 7.5-9.6V6L12 3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c.7-3.5 3.4-5.4 7-5.4s6.3 1.9 7 5.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10.5" rx="2.4"/><path d="M8 10V7.8a4 4 0 0 1 8 0V10"/><path d="M12 14v2.5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 6.1A10.9 10.9 0 0 1 12 6c6 0 9.5 6 9.5 6a17 17 0 0 1-3.2 3.8"/><path d="M6.1 6.8A17.6 17.6 0 0 0 2.5 12S6 18 12 18a10 10 0 0 0 4.3-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13"/><path d="m13 7 5 5-5 5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4L3 10"/><path d="M3 5v5h5"/><path d="M4 13a8 8 0 0 0 14.6 4L21 14"/><path d="M21 19v-5h-5"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M9 8l-4 4 4 4"/><path d="M5 12h10"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l2.2-6 4.1 12 2.3-6H21"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.1"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 8.5 4.6L12 12.2 3.5 7.6 12 3Z"/><path d="m3.5 12.2 8.5 4.6 8.5-4.6"/><path d="m3.5 16.6 8.5 4.6 8.5-4.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5V12l3 1.8"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2.5 5 13.2h5.2L10.5 21.5 19 10.8h-5.2l-.3-8.3Z"/></symbol>
+    <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="M3 17.5 9 11l4 4 7.5-8"/><path d="M15 7h5.5v5.5"/></symbol>
+    <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="M3 6.5 9 13l4-4 7.5 8"/><path d="M15 17h5.5v-5.5"/></symbol>
+    <symbol id="i-lock-keyhole" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2.2"/><path d="M8.2 10.5V8a3.8 3.8 0 0 1 7.6 0v2.5"/><circle cx="12" cy="15" r="1.2"/><path d="M12 16.2v1.6"/></symbol>
+  </svg>
 
-  <header class="topbar">
-    <a class="brand" href="./">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>Crypto Scalping Signal Bot</span>
-    </a>
-    <span class="pill">Signal-only · no orders</span>
-  </header>
+  <div class="login-shell" id="login-view">
+    <div class="login-bg" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+      <div class="login-grid"></div>
+      <svg class="story-chart" viewBox="0 0 620 280" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="chart-line" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#38e0a0" stop-opacity="0"/>
+            <stop offset=".4" stop-color="#38e0a0"/>
+            <stop offset="1" stop-color="#6aa8ff"/>
+          </linearGradient>
+          <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#38e0a0" stop-opacity=".16"/>
+            <stop offset="1" stop-color="#38e0a0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g class="chart-grid">
+          <path d="M0 60h620M0 120h620M0 180h620M0 240h620"/>
+          <path d="M120 0v280M240 0v280M360 0v280M480 0v280"/>
+        </g>
+        <path class="chart-area" d="M0 214 C60 208 78 190 116 196 S176 168 212 174 S272 138 310 146 S372 112 408 120 S474 84 512 96 S572 62 620 52 V280 H0 Z"/>
+        <path class="chart-line" d="M0 214 C60 208 78 190 116 196 S176 168 212 174 S272 138 310 146 S372 112 408 120 S474 84 512 96 S572 62 620 52"/>
+        <g class="chart-candles">
+          <g transform="translate(78 160)"><path d="M6 0v18M6 66v18"/><rect x="0" y="18" width="12" height="48" rx="2"/></g>
+          <g transform="translate(150 142)"><path d="M6 0v20M6 78v16"/><rect x="0" y="20" width="12" height="58" rx="2"/></g>
+          <g transform="translate(222 128)"><path d="M6 0v16M6 74v18"/><rect x="0" y="16" width="12" height="58" rx="2"/></g>
+          <g transform="translate(294 110)"><path d="M6 0v18M6 86v18"/><rect x="0" y="18" width="12" height="68" rx="2"/></g>
+          <g transform="translate(366 96)"><path d="M6 0v14M6 70v20"/><rect x="0" y="14" width="12" height="56" rx="2"/></g>
+          <g transform="translate(438 82)"><path d="M6 0v18M6 82v18"/><rect x="0" y="18" width="12" height="64" rx="2"/></g>
+          <g transform="translate(510 64)"><path d="M6 0v16M6 74v18"/><rect x="0" y="16" width="12" height="58" rx="2"/></g>
+        </g>
+        <g class="chart-pulse">
+          <circle cx="620" cy="52" r="4"/>
+          <circle cx="620" cy="52" r="11"/>
+        </g>
+      </svg>
+    </div>
 
-  <main>
-    <section class="hero">
-      <p class="eyebrow">Binance spot · 5-minute closed candles</p>
-      <h1>Confluence signals,<br><span>delivered to Telegram.</span></h1>
-      <p class="lede">
-        Scans the most liquid USDT pairs for resistance breakouts and support
-        rejections, then confirms each setup with EMA trend, ATR volatility,
-        RSI momentum, and above-average volume.
-      </p>
+    <main class="login-layout">
+      <section class="login-story">
+        <a class="brand brand-large" href="./" aria-label="Signal Desk home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-text">Signal Desk</span>
+          <span class="brand-tag">PRIVATE</span>
+        </a>
 
-      <div class="stats" role="list">
-        <div class="stat" role="listitem">
-          <strong>5m</strong>
-          <span>Closed candles only</span>
+        <div class="story-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span>Private market intelligence</p>
+          <h1>Trade the signal.<br><span>Not the noise.</span></h1>
+          <p class="lede">
+            A private desk for 5-minute Binance confluence setups. The scanner reads
+            closed candles, checks every rule, and surfaces only what qualifies.
+          </p>
+          <div class="story-chips">
+            <span><svg class="icon"><use href="#i-clock"/></svg>5m closed candles</span>
+            <span><svg class="icon"><use href="#i-layers"/></svg>24 liquid pairs</span>
+            <span><svg class="icon"><use href="#i-shield"/></svg>Signal-only</span>
+          </div>
         </div>
-        <div class="stat" role="listitem">
-          <strong>26</strong>
-          <span>Liquid pairs scanned</span>
+
+        <div class="story-metrics">
+          <div><strong>24</strong><span>pairs per scan</span></div>
+          <div><strong>5m</strong><span>closed candles</span></div>
+          <div><strong>0</strong><span>orders placed</span></div>
         </div>
-        <div class="stat" role="listitem">
-          <strong>70+</strong>
-          <span>Minimum score</span>
-        </div>
-        <div class="stat" role="listitem">
-          <strong>0</strong>
-          <span>Orders placed</span>
-        </div>
+      </section>
+
+      <section class="login-panel">
+        <form class="login-card" id="login-form" novalidate>
+          <div class="login-card-head">
+            <span class="login-icon"><svg class="icon"><use href="#i-lock-keyhole"/></svg></span>
+            <div>
+              <strong>Signal Desk</strong>
+              <span>Private access</span>
+            </div>
+          </div>
+
+          <h2>Welcome back.</h2>
+          <p class="login-sub">Sign in to open your live signal feed.</p>
+
+          <label class="field" for="username">
+            <span>Username</span>
+            <span class="input-wrap">
+              <svg class="icon input-icon"><use href="#i-user"/></svg>
+              <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username" spellcheck="false" required>
+            </span>
+          </label>
+
+          <label class="field" for="password">
+            <span>Password</span>
+            <span class="input-wrap">
+              <svg class="icon input-icon"><use href="#i-lock"/></svg>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required>
+              <button class="input-action" id="toggle-password" type="button" aria-label="Show password">
+                <svg class="icon eye-open"><use href="#i-eye"/></svg>
+                <svg class="icon eye-closed"><use href="#i-eye-off"/></svg>
+              </button>
+            </span>
+          </label>
+
+          <p class="form-error" id="login-error" role="alert" aria-live="polite"></p>
+
+          <button class="btn-primary" id="login-submit" type="submit">
+            <span>Enter desk</span>
+            <svg class="icon"><use href="#i-arrow"/></svg>
+          </button>
+
+          <p class="login-footnote">
+            Private single-user gate · client-side only · not server-side authentication.
+          </p>
+        </form>
+        <p class="login-legal">Signal-only research interface. No orders, no custody, no financial advice.</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="app-shell" id="app-view" hidden>
+    <header class="app-header">
+      <div class="app-header-left">
+        <a class="brand" href="./" aria-label="Signal Desk home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-text">Signal Desk</span>
+        </a>
+        <span class="private-badge"><svg class="icon"><use href="#i-shield"/></svg>PRIVATE</span>
       </div>
-    </section>
-
-    <section class="grid" aria-label="Bot overview">
-      <article class="card signal-card">
-        <div class="card-head">
-          <span class="label">Alert format</span>
-          <span class="side">LONG</span>
+      <div class="app-header-right">
+        <div class="live-status" id="live-status">
+          <span class="live-dot"></span>
+          <span id="live-status-text">Live</span>
         </div>
-        <h2>ZAMAUSDT</h2>
-        <p class="setup">Resistance breakout</p>
-        <div class="score">
-          <strong>88</strong><span>/100</span>
+        <span class="header-divider" aria-hidden="true"></span>
+        <div class="last-scan">
+          <span>Last scan</span>
+          <strong id="last-scan">—</strong>
         </div>
-        <dl class="levels">
-          <div><dt>Entry</dt><dd>0.06951</dd></div>
-          <div><dt>Stop</dt><dd>0.06902</dd></div>
-          <div><dt>TP 1R</dt><dd>0.07000</dd></div>
-          <div><dt>TP 2R</dt><dd>0.07049</dd></div>
-        </dl>
-        <p class="meta">ATR 0.000327 · RSI 67.3 · Volume 3.11×</p>
-      </article>
+        <button class="btn-ghost" id="refresh-btn" type="button">
+          <svg class="icon spin-target"><use href="#i-refresh"/></svg>
+          <span>Scan now</span>
+        </button>
+        <button class="icon-btn" id="logout-btn" type="button" title="Lock desk" aria-label="Lock desk">
+          <svg class="icon"><use href="#i-logout"/></svg>
+        </button>
+      </div>
+    </header>
 
-      <article class="card">
-        <div class="card-head">
-          <span class="label">Pipeline</span>
+    <main class="app-main">
+      <section class="desk-head">
+        <div class="desk-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span>Binance spot · 5-minute closed candles</p>
+          <h1>Trade desk</h1>
+          <p class="lede">One clean plan at a time: entry, stop, targets, and position size — only when every rule agrees. No orders are placed for you.</p>
         </div>
-        <h2>How a signal is built</h2>
-        <ol class="steps">
-          <li><span>01</span> Rank USDT pairs by 24-hour quote volume.</li>
-          <li><span>02</span> Download candles and drop the forming bar.</li>
-          <li><span>03</span> Test breakout and rejection rules.</li>
-          <li><span>04</span> Score confluence, then apply the cooldown.</li>
-        </ol>
-      </article>
-
-      <article class="card code-card">
-        <div class="card-head">
-          <span class="label">Quick start</span>
+        <div class="scan-clock">
+          <span>Auto refresh</span>
+          <strong id="countdown">10s</strong>
+          <div class="scan-progress"><span id="scan-progress-bar"></span></div>
+          <small id="scan-clock-sub">Live data · signals every 5m</small>
         </div>
-        <h2>Run it locally</h2>
-        <pre><code>python3 -m pip install -r requirements.txt
-python3 bot.py --ping
-python3 get_chat_id.py
-python3 bot.py --test-telegram
-python3 bot.py --loop</code></pre>
-        <p class="meta">
-          Public market data only. No exchange API keys are required.
-        </p>
-      </article>
+      </section>
 
-      <article class="card">
-        <div class="card-head">
-          <span class="label">Risk</span>
+      <section class="stat-grid" aria-label="Desk summary">
+        <article class="stat-card">
+          <span class="stat-icon"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <div><span>Pairs scanned</span><strong id="stat-pairs">—</strong><small>liquid USDT pairs</small></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon accent"><svg class="icon"><use href="#i-target"/></svg></span>
+          <div><span>Qualifying setups</span><strong id="stat-signals">—</strong><small>passed every rule</small></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon"><svg class="icon"><use href="#i-activity"/></svg></span>
+          <div><span>Average score</span><strong id="stat-score">—</strong><small>confluence strength</small></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon"><svg class="icon"><use href="#i-bolt"/></svg></span>
+          <div><span>BTC 5m regime</span><strong id="stat-regime">—</strong><small id="stat-regime-detail">waiting for data</small></div>
+        </article>
+      </section>
+
+      <section class="panel chart-panel" aria-label="Four-timeframe TradingView charts">
+        <div class="chart-head">
+          <div class="chart-title">
+            <p class="eyebrow">Live charts · TradingView</p>
+            <div class="chart-symbol-row">
+              <h2 id="chart-symbol">BTCUSDT</h2>
+              <span class="chart-price" id="chart-price">—</span>
+              <span class="chart-change" id="chart-change">—</span>
+            </div>
+            <p class="chart-sub">Four windows, one pair — 1m trigger, 5m signal, 15m structure, 4h context.</p>
+          </div>
+          <div class="chart-controls">
+            <span class="chart-view-badge"><svg class="icon"><use href="#i-layers"/></svg>4 windows</span>
+            <a class="chart-link" id="chart-link" href="https://www.tradingview.com/chart/?symbol=BINANCE:BTCUSDT" target="_blank" rel="noopener">Open ↗</a>
+          </div>
         </div>
-        <h2>Read before trading</h2>
-        <p class="copy">
-          Five-minute signals are sensitive to spread, fees, slippage, latency,
-          and false breakouts. Entry, stop, and target values are references,
-          not executable quotes. Forward-test before risking real money.
-        </p>
-      </article>
-    </section>
-  </main>
+        <div class="tv-grid">
+          <div class="tv-cell">
+            <div class="tv-cell-head"><strong>1m</strong><span>Trigger</span></div>
+            <div class="tv-slot" id="tv-1"><div class="chart-loading">Loading 1m chart…</div></div>
+          </div>
+          <div class="tv-cell">
+            <div class="tv-cell-head"><strong>5m</strong><span>Signal</span></div>
+            <div class="tv-slot" id="tv-5"><div class="chart-loading">Loading 5m chart…</div></div>
+          </div>
+          <div class="tv-cell">
+            <div class="tv-cell-head"><strong>15m</strong><span>Structure</span></div>
+            <div class="tv-slot" id="tv-15"><div class="chart-loading">Loading 15m chart…</div></div>
+          </div>
+          <div class="tv-cell">
+            <div class="tv-cell-head"><strong>4h</strong><span>Context</span></div>
+            <div class="tv-slot" id="tv-240"><div class="chart-loading">Loading 4h chart…</div></div>
+          </div>
+        </div>
+        <p class="chart-foot">Charts by TradingView · live Binance spot · click any signal or pair to load all four windows</p>
+      </section>
 
-  <footer>
-    <span>Research software · Not financial advice</span>
-    <span class="footer-dot" aria-hidden="true"></span>
-    <span>Telegram alerts via the Bot API</span>
-  </footer>
+      <section class="panel indicator-panel" aria-label="Indicator stack">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Signal anatomy</p>
+            <h3>Indicator stack <span class="indicator-pair" id="indicator-pair">BTCUSDT</span></h3>
+          </div>
+          <span class="indicator-verdict" id="indicator-verdict">Waiting for data</span>
+        </div>
+        <p class="indicator-lede">Every input the scanner reads before it emits a signal, with the reason each one is in the rule set.</p>
+        <div class="indicator-grid" id="indicator-grid"></div>
+      </section>
+
+      <section class="panel backtest-panel" aria-label="Backtest results">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Backtest</p>
+            <h3>Historical accuracy <span class="indicator-pair" id="backtest-pair">BTCUSDT</span></h3>
+          </div>
+          <button class="link-btn" id="backtest-run" type="button">Run again</button>
+        </div>
+        <div class="backtest-body">
+          <div class="backtest-gauge">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="backtest-track" cx="60" cy="60" r="52"></circle>
+              <circle class="backtest-value" id="backtest-ring" cx="60" cy="60" r="52"
+                stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+            </svg>
+            <div class="backtest-score"><strong id="backtest-accuracy">—</strong><span>/100</span></div>
+          </div>
+          <div class="backtest-detail">
+            <p class="backtest-verdict" id="backtest-verdict">Backtesting the last ~3 days of 5m candles…</p>
+            <div class="backtest-stats" id="backtest-stats"></div>
+            <p class="backtest-note" id="backtest-note">Approximate study: entry at the next candle open, 1R target, signal stop, maximum hold 4 hours. Overlapping trades are counted independently. Past performance does not predict future results.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="signals-column">
+          <section class="panel ticket-panel" id="ticket-panel" aria-label="Trade ticket">
+            <div class="ticket-head">
+              <div>
+                <p class="eyebrow">Trade ticket</p>
+                <div class="ticket-title">
+                  <h2 id="ticket-symbol">BTCUSDT</h2>
+                  <span class="side-pill long" id="ticket-side">LONG</span>
+                  <span class="ticket-score" id="ticket-score">—</span>
+                </div>
+                <p class="ticket-setup" id="ticket-setup">Waiting for a qualifying setup.</p>
+              </div>
+              <div class="ticket-actions">
+                <button class="btn-primary small" id="ticket-copy" type="button">Copy trade plan</button>
+                <button class="btn-ghost" id="ticket-chart" type="button">View 4 charts</button>
+              </div>
+            </div>
+
+            <div class="ticket-levels" id="ticket-levels"></div>
+
+            <div class="ticket-timing">
+              <div class="timing-block">
+                <span class="mini-label">Suggested entry timeframe</span>
+                <strong id="ticket-timeframe">5-minute close</strong>
+                <small id="ticket-trigger">Waiting for a closed 5m candle that clears every rule.</small>
+              </div>
+              <div class="timing-block">
+                <span class="mini-label">Next 5m close</span>
+                <strong id="ticket-countdown">--:--</strong>
+                <small>Entries are confirmed on closed candles, never mid-candle.</small>
+              </div>
+              <div class="timing-chips" aria-label="Timeframe roles">
+                <span><strong>1m</strong> confirmation</span>
+                <span class="is-primary"><strong>5m</strong> signal</span>
+                <span><strong>15m</strong> context</span>
+              </div>
+            </div>
+
+            <div class="ticket-grid">
+              <div class="ticket-calc">
+                <span class="mini-label">Position size</span>
+                <label class="calc-field">Account (USDT)<input id="calc-account" type="number" min="10" step="10" value="1000" inputmode="decimal"></label>
+                <label class="calc-field">Risk per trade (%)<input id="calc-risk" type="number" min="0.1" max="10" step="0.1" value="1" inputmode="decimal"></label>
+                <div class="calc-out" id="calc-out"></div>
+              </div>
+              <div class="ticket-checklist">
+                <span class="mini-label">Entry checklist</span>
+                <ul id="ticket-checklist"></ul>
+              </div>
+            </div>
+
+            <p class="ticket-note" id="ticket-note">Signal-only research. Size the position so a stop-out is a planned loss, not a surprise. Not financial advice.</p>
+          </section>
+
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Live output</p>
+              <h2>Active signals <span class="count-pill" id="signal-count">0</span></h2>
+            </div>
+            <div class="section-meta" id="scan-summary">Waiting for first scan</div>
+          </div>
+
+          <div class="scan-banner" id="scan-banner" hidden></div>
+          <div class="signal-list" id="signals" aria-live="polite"></div>
+
+          <section class="panel history-panel">
+            <div class="panel-head">
+              <div><p class="eyebrow">Session log</p><h3>Signal history</h3></div>
+              <button class="link-btn" id="clear-history" type="button">Clear</button>
+            </div>
+            <div class="history-list" id="history"></div>
+          </section>
+        </section>
+
+        <aside class="side-column">
+          <section class="panel news-panel" aria-label="Pair news">
+            <div class="panel-head">
+              <div><p class="eyebrow">Pair news</p><h3 id="news-symbol">BTCUSDT</h3></div>
+              <span class="feed-status" id="feed-status"><span class="live-dot"></span><span id="feed-status-text">Live</span></span>
+            </div>
+            <div class="news-tabs" id="news-tabs" role="tablist" aria-label="News window">
+              <button class="news-tab is-active" data-window="24h" type="button" role="tab" aria-selected="true">24H</button>
+              <button class="news-tab" data-window="4h" type="button" role="tab" aria-selected="false">4H</button>
+              <button class="news-tab" data-window="1h" type="button" role="tab" aria-selected="false">1H</button>
+              <button class="news-tab" data-window="live" type="button" role="tab" aria-selected="false"><span class="live-dot tiny"></span>LIVE</button>
+            </div>
+            <div class="news-list" id="news-list" aria-live="polite"></div>
+            <div class="news-foot" id="news-foot">Binance announcements + market data</div>
+          </section>
+
+          <section class="panel status-panel">
+            <div class="panel-head"><div><p class="eyebrow">Desk status</p><h3>Scanner</h3></div><span class="status-chip" id="status-chip">Idle</span></div>
+            <div class="status-rows">
+              <div><span>Data source</span><strong>Binance public</strong></div>
+              <div><span>Universe</span><strong id="status-universe">—</strong></div>
+              <div><span>Last scan</span><strong id="status-last-scan">—</strong></div>
+              <div><span>Next scan</span><strong id="status-next-scan">—</strong></div>
+              <div><span>Mode</span><strong>Signal-only</strong></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><p class="eyebrow">Market pulse</p><h3>Volume leaders</h3></div><svg class="icon panel-icon"><use href="#i-trend-up"/></svg></div>
+            <div class="market-list" id="market-list"><p class="muted">Waiting for market data.</p></div>
+            <div class="movers" id="movers"></div>
+          </section>
+
+          <section class="panel btc-panel">
+            <div class="panel-head"><div><p class="eyebrow">Regime</p><h3>BTCUSDT · 5m</h3></div><span class="trend-badge" id="btc-trend">—</span></div>
+            <strong class="btc-price" id="btc-price">—</strong>
+            <div class="btc-metrics">
+              <div><span>RSI 14</span><strong id="btc-rsi">—</strong></div>
+              <div><span>EMA 20</span><strong id="btc-ema20">—</strong></div>
+              <div><span>EMA 50</span><strong id="btc-ema50">—</strong></div>
+            </div>
+          </section>
+
+          <section class="panel rules-panel">
+            <div class="panel-head"><div><p class="eyebrow">Playbook</p><h3>What qualifies</h3></div><svg class="icon panel-icon"><use href="#i-shield"/></svg></div>
+            <ul class="rule-list">
+              <li><span class="rule-dot green"></span><div><strong>Resistance breakout</strong><p>Close above prior resistance, EMA20 &gt; EMA50, RSI 50–72, volume ≥ 1.5×.</p></div></li>
+              <li><span class="rule-dot blue"></span><div><strong>Support rejection</strong><p>Bullish rejection at support, EMA20 &gt; EMA50, strong close, RSI 40–65.</p></div></li>
+              <li><span class="rule-dot amber"></span><div><strong>Risk filter</strong><p>ATR between 0.05% and 3%; stop and 1R/2R targets are references only.</p></div></li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <span>Signal Desk · research interface</span>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <span>No orders · no custody · not financial advice</span>
+      <span class="footer-spacer"></span>
+      <span class="footer-mono">5m · USDT · spot</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">This desk needs JavaScript to scan the market.</div></noscript>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
